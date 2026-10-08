@@ -425,9 +425,11 @@ function submitPaymentDetails(event){
     'Submitted: '+new Date().toLocaleString()
   );
 
-  window.location.href='mailto:shuklashourya32@gmail.com?subject='+subject+'&body='+body;
-  document.getElementById('paymentDetailsForm').style.display='none';
-  document.getElementById('paymentDetailsSent').style.display='block';
+  const RIFT_PAYMENT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyUkj0EgIIVKThnsG-zFBvb9lSXLNhh-5ypDekSrRUiA3q1ofMA0FO-d-gXnbN81XjW/exec';
+  if(RIFT_PAYMENT_ENDPOINT.includes('PASTE_YOUR')){ alert('Payment system setup pending. Please contact Rift Studio.'); return; }
+  fetch(RIFT_PAYMENT_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams({name,email,utr,phone,amount:String(total),upiId:'nyx.exeshukla@fam'}).toString()})
+    .then(()=>{document.getElementById('paymentDetailsForm').style.display='none';document.getElementById('paymentDetailsSent').style.display='block';})
+    .catch(()=>alert('Could not submit payment details. Please try again.'));
 }
 </script>
 
